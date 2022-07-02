@@ -30,14 +30,40 @@ const Home = () => {
     getTutorials();
   }, []);
 
-  console.log(tutorials);
+  // Delete Fonksiyonu
+  const deleteTutorials = async (id) => {
+    try {
+      await axios.delete(`${url}/${id}`);
+    } catch (error) {
+      console.log(error);
+    }
+    getTutorials();
+  };
 
-  // getTutorials();
+  // Edit Foksiyonu (update , PUT ,PATCH)
+
+  const updateTutorials = async (id, title, desc) => {
+    const filtered = tutorials
+      .filter((tutor) => tutor.id === id)
+      .map(() => ({ title: title, description: desc }));
+    console.log(filtered, filtered[0]);
+    try {
+      await axios.put(`${url}/${id}`);
+    } catch (error) {
+      console.log(error);
+    }
+
+    getTutorials();
+  };
 
   return (
     <>
       <AddTutorial addTutorial={addTutorial} />
-      <TutorialList tutorials={tutorials} />
+      <TutorialList
+        tutorials={tutorials}
+        deleteTutorials={deleteTutorials}
+        updateTutorials={updateTutorials}
+      />
     </>
   );
 };
